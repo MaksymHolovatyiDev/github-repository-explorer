@@ -1,3 +1,11 @@
+Simple GitHub Repository Explorer
+
+![Search bar](/Screenshots/search.png?raw=true 'Search bar')
+
+![List of user repositories](/Screenshots/list.png?raw=true 'List of user repositories')
+
+![User repository](/Screenshots/repo.png?raw=true 'User repository')
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
