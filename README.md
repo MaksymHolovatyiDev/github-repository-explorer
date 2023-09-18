@@ -6,6 +6,20 @@ Simple GitHub Repository Explorer
 
 ![User repository](/Screenshots/repo.png?raw=true 'User repository')
 
+## To run project
+
+```bash
+npm i
+npm run dev
+# or
+yarn install
+yarn dev
+```
+
+## Feedback
+
+Errors that need to be resolved instead of writing code and the limitations on GitHub API requests are always disappointing.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
