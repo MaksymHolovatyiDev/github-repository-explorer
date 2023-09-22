@@ -2,34 +2,37 @@
 
 import SearchIcon from '@mui/icons-material/Search';
 import {Search, SearchIconWrapper, StyledInputBase} from './SearchBar.styled';
-import {SearchBarProps} from '@/Types';
-import {useLazyGetGitHubRepositoriesQuery} from '@/Redux/api/api';
+import {getGitHubRepositories, getUserRepoCount} from '@/Redux/api/api';
 import {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {setQuery} from '@/Redux/query/query';
+import {useDispatch, useSelector} from 'react-redux';
+import {changePage, changeUser, resetList} from '@/Redux/query/query';
 import {Button} from '@mui/material';
+import {getQuery} from '@/Redux/query/query.slice';
 
-function SearchBar({setList}: SearchBarProps) {
+function SearchBar() {
   const [user, setUser] = useState('');
-  const [fetch, {data, isFetching}] = useLazyGetGitHubRepositoriesQuery();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
+
+  const query = useSelector(getQuery);
 
   const onSearchBarChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setUser(evt.target.value);
 
-    if (!evt.target.value) setList(null);
+    if (!evt.target.value) resetList();
   };
 
   const onButtonClick = () => {
     if (user) {
-      dispatch(setQuery(user));
-      fetch({name: user, page: 0});
+      dispatch(changeUser(user));
+      dispatch(changePage(1));
+      dispatch(getUserRepoCount(user));
+      dispatch(getGitHubRepositories({user, page: 1}));
     }
   };
 
   useEffect(() => {
-    if (!isFetching && data) setList(data);
-  }, [isFetching]);
+    if (query.user) setUser(query.user);
+  }, []);
 
   return (
     <div className="flex mb-4">

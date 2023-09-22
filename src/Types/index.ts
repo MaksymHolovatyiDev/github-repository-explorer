@@ -5,16 +5,21 @@ export interface Items {
   stargazers_count: number;
 }
 
+export interface UserRepoRes extends Items {
+  owner: {login: string};
+  html_url: string;
+}
+
 export interface QueryReq {
-  name: string;
+  user: string;
   page: number;
+}
+
+export interface getUserRepo {
+  id: string;
 }
 
 export interface RepoReq {
   name: string;
   repo: string;
-}
-
-export interface SearchBarProps {
-  setList: (data: Items[] | null) => void;
 }

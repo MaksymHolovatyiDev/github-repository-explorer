@@ -1,43 +1,17 @@
-import {setRepo} from '@/Redux/query/query';
-import {Items} from '@/Types';
-import {useDispatch, useSelector} from 'react-redux';
-import RepositoryDetails from '../RepositoryDetail/RepositoryDetail';
-import {Button} from '@mui/material';
-import {useEffect, useState} from 'react';
-import {getQuery} from '@/Redux/query/query.slice';
-import {useLazyGetGitHubRepositoriesQuery} from '@/Redux/api/api';
+import {useSelector} from 'react-redux';
+import {getList} from '@/Redux/query/query.slice';
+import {useRouter} from 'next/navigation';
+import {MainPagination} from '@/components/MainPagination/MainPagination';
 
-function RepositoryList({
-  list,
-  setList,
-}: {
-  list: Items[];
-  setList: (data: Items[]) => void;
-}) {
-  const dispatch = useDispatch();
-  const [page, setPage] = useState(0);
-  const name = useSelector(getQuery);
-  const [fetch, {data, isFetching}] = useLazyGetGitHubRepositoriesQuery();
+function RepositoryList() {
+  const router = useRouter();
+  const list = useSelector(getList);
 
-  const onCardClick = (repo: unknown) => {
-    dispatch(setRepo(repo));
+  const onCardClick = (repo: any) => {
+    router.push(`/${repo.id}`);
   };
 
-  const onNextClick = () => {
-    fetch({name, page: page + 1});
-    setPage(prevState => ++prevState);
-  };
-
-  const onPrevClick = () => {
-    fetch({name, page: page - 1});
-    setPage(prevState => --prevState);
-  };
-
-  useEffect(() => {
-    if (!isFetching && data) setList(data);
-  }, [isFetching]);
-
-  return (
+  return list.length !== 0 ? (
     <>
       <ul className="flex flex-col gap-4">
         {list?.map(el => (
@@ -52,15 +26,10 @@ function RepositoryList({
           </li>
         ))}
       </ul>
-      <div className="flex mt-6">
-        <Button onClick={onPrevClick} type="button">
-          Prev
-        </Button>
-        <Button onClick={onNextClick} type="button">
-          Next
-        </Button>
-      </div>
+      <MainPagination />
     </>
+  ) : (
+    <p>Search</p>
   );
 }
 

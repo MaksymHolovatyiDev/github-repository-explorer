@@ -1,32 +1,45 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {Items} from '@/Types';
+import {getGitHubRepositories, getUserRepoCount} from '../api/api';
 
-const repo = {
-  name: '',
-  stargazers_count: 0,
-  description: '',
-  owner: {login: ''},
-  html_url: '',
-};
+const list: Items[] | [] = [];
 
 const query = createSlice({
   name: 'query',
   initialState: {
-    query: '',
-    repo,
+    query: {user: '', page: 1},
+    list,
+    userFound: true,
+    pagesCount: 0,
   },
   reducers: {
-    setQuery: (state, {payload}) => {
-      state.query = payload;
+    changeUser: (state, {payload}) => {
+      state.query.user = payload;
     },
-    setRepo: (state, {payload}) => {
-      state.repo = payload;
+    changePage: (state, {payload}) => {
+      state.query.page = payload;
     },
-    resetRepo: state => {
-      console.log(12, repo);
-      state.repo = repo;
+    resetList: state => {
+      state.list = [];
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(getGitHubRepositories.fulfilled, (state, action) => {
+      state.userFound = true;
+      state.list = action.payload;
+    });
+    builder.addCase(getGitHubRepositories.rejected, state => {
+      state.userFound = false;
+    });
+    builder.addCase(getUserRepoCount.fulfilled, (state, action) => {
+      state.userFound = true;
+      state.pagesCount = Math.ceil(action.payload.public_repos / 5);
+    });
+    builder.addCase(getUserRepoCount.rejected, state => {
+      state.userFound = false;
+    });
   },
 });
 
 export const queryReducer = query.reducer;
-export const {setQuery, setRepo, resetRepo} = query.actions;
+export const {changeUser, changePage, resetList} = query.actions;

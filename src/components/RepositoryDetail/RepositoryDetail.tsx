@@ -1,14 +1,17 @@
-import {resetRepo} from '@/Redux/query/query';
-import {getRepo} from '@/Redux/query/query.slice';
 import {Button} from '@mui/material';
-import {useDispatch, useSelector} from 'react-redux';
+import {usePathname, useRouter} from 'next/navigation';
+import {useGetGitHubUserRepositoryQuery} from '@/Redux/api/api';
 
 function RepositoryDetails() {
-  const repo = useSelector(getRepo);
-  const dispatch = useDispatch();
+  const pathname = usePathname();
+  const {data, isSuccess} = useGetGitHubUserRepositoryQuery({
+    id: pathname.slice(1),
+  });
+
+  const router = useRouter();
 
   const onButtonClick = () => {
-    dispatch(resetRepo());
+    router.back();
   };
 
   return (
@@ -16,14 +19,18 @@ function RepositoryDetails() {
       <Button type="button" className="self-start" onClick={onButtonClick}>
         Back
       </Button>
-      <p>Name: {repo.name}</p>
-      <p>Owner's username: {repo.owner.login}</p>
-      <p>Description: {repo.description}</p>
-      <p>Stars: {repo.stargazers_count}</p>
-      <p>
-        Link to the repository on GitHub:{' '}
-        <a href={repo.html_url}>{repo.html_url}</a>
-      </p>
+      {isSuccess && (
+        <>
+          <p>Name: {data.name}</p>
+          <p>Owner's username: {data.owner.login}</p>
+          <p>Description: {data.description}</p>
+          <p>Stars: {data.stargazers_count}</p>
+          <p>
+            Link to the repository on GitHub:{' '}
+            <a href={data.html_url}>{data.html_url}</a>
+          </p>
+        </>
+      )}
     </div>
   );
 }
