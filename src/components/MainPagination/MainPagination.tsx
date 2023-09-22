@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Pagination, Stack} from '@mui/material';
 import {changePage} from '@/Redux/query/query';
 import {getGitHubRepositories} from '@/Redux/api/api';
-import {getPagesCount, getQuery} from '@/Redux/query/query.slice';
+import {getPagesCount, getQuery} from '@/Redux/query/query.selectors';
 
 export function MainPagination() {
   const dispatch = useDispatch<any>();

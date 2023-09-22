@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {changePage, changeUser, resetList} from '@/Redux/query/query';
 import {Button} from '@mui/material';
-import {getQuery} from '@/Redux/query/query.slice';
+import {getQuery} from '@/Redux/query/query.selectors';
 
 function SearchBar() {
   const [user, setUser] = useState('');

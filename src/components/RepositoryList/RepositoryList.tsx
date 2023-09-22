@@ -1,5 +1,5 @@
 import {useSelector} from 'react-redux';
-import {getList} from '@/Redux/query/query.slice';
+import {getList} from '@/Redux/query/query.selectors';
 import {useRouter} from 'next/navigation';
 import {MainPagination} from '@/components/MainPagination/MainPagination';
 

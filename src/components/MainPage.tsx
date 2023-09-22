@@ -1,4 +1,4 @@
-import {userFound} from '@/Redux/query/query.slice';
+import {userFound} from '@/Redux/query/query.selectors';
 import RepositoryList from '@/components/RepositoryList/RepositoryList';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import {useSelector} from 'react-redux';
